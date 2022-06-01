@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    <iframe class="storeMsg" frameborder="10" style="width:100%; height: 100%;"></iframe>
+    <textarea class="msgBox" cols="30" rows="10"></textarea>
+    <button class="sendMsg">Send</button>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        var connectionOptions =  {
+        "force new connection" : true,
+        "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+        "timeout" : 10000,                  //before connect_error and connect_timeout are emitted.
+        "transports" : ["websocket"]
+    };
+
+    var socket = io('http://localhost:3000', connectionOptions);
+    const msgBox = document.querySelector("textarea.msgBox");
+    const sendMsg = document.querySelector("button.sendMsg");
+    const storeMsg = document.querySelector("iframe.storeMsg");
+    sendMsg.addEventListener("click", function () {
+        const newMsg = storeMsg.contentWindow.document.createElement('p');
+        newMsg.textContent = msgBox.value;
+        storeMsg.contentWindow.document.body.appendChild(newMsg);
+        socket.emit('new message', msgBox.value);
+        msgBox.value = ``
+    });
+    socket.on('new message', (data) => {
+        console.log(data);
+        const a = document.createElement('p');
+        newMsg.textContent = data;
+        storeMsg.contentWindow.document.body.appendChild(a);
+    });
+    </script>
+</body>
+</html>
