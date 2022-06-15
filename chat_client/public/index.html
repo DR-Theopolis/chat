@@ -33,7 +33,7 @@
     socket.on('new message', (data) => {
         console.log(data);
         const a = document.createElement('p');
-        newMsg.textContent = data;
+        a.textContent = data.message;
         storeMsg.contentWindow.document.body.appendChild(a);
     });
     </script>
