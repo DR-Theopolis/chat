@@ -1,8 +1,8 @@
 # Chat Future Features
-- Write messages to a file on the server.
-- Send old messages to new user login.
+- Write messages to a file on the server (in json). NEXT
+- Send old messages to new user login. NEXT
 - Video messaging.
-- Username from prompt on first login.
+- Username from prompt on first login. NEXT
 - Save username on client-side local storage.
 - Cache all usernames on server side.  
 - Attach images to a message.
