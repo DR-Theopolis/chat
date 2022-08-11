@@ -1,6 +1,6 @@
 # Chat Future Features
-- Write messages to a file on the server (in json). NEXT
-- Send old messages to new user login. NEXT
+- Write messages to a file on the server. DONE
+- Send old messages to new user login. DONE
 - Video messaging.
 - Username from prompt on first login. NEXT
 - Save username on client-side local storage.
