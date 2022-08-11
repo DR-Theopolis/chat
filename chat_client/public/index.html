@@ -28,12 +28,12 @@
         const newMsg = storeMsg.contentWindow.document.createElement('p');
         newMsg.innerHTML = msgBox.value;
         storeMsg.contentWindow.document.body.appendChild(newMsg);
-        socket.emit('new message', msgBox.value);
+        socket.emit('new message', `${msgBox.value}<br><br>`);
         msgBox.value = ``
     });
     socket.on('new message', (data) => {
         const a = document.createElement('p');
-        console.log(data);
+        console.log(data)
         a.innerHTML = data.message;
         storeMsg.contentWindow.document.body.appendChild(a);
     });
