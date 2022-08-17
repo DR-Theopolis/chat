@@ -2,10 +2,10 @@
 - Write messages to a file on the server. DONE
 - Send old messages to new user login. DONE
 - Video messaging.
-- Username from prompt on first login. NEXT
-- Save username on client-side local storage.
-- Cache all usernames on server side.  
-- Attach images to a message.
+- Username from prompt on first login. DONE
+- Save username on client-side local storage. DONE
+- Cache all usernames on server side. DONE
+- Attach images to a message. NEXT
 - Have different rooms.  
  
 
