@@ -8,6 +8,12 @@
 </head>
 <body>
     <iframe class="storeMsg" frameborder="10" style="width:100%; height: 100%;"></iframe>
+    <div>
+        <p>Please don't upload files that can't be rendered by a browser.</p>
+        <input type="file" onchange="encodeImageFileAsURL(this)" />
+    </div>
+    <br>
+    <br>
     <textarea class="msgBox" cols="30" rows="10"></textarea>
     <button class="sendMsg">Send</button>
     <script src="http://dylan.local:3000/socket.io/socket.io.js"></script>
@@ -53,6 +59,16 @@
         a.innerHTML = data.message;
         storeMsg.contentWindow.document.body.appendChild(a);
     });
+    function encodeImageFileAsURL(element) {
+        let file = element.files[0];
+        let reader = new FileReader();
+        reader.onload = function() {
+            const dataUrl = reader.result
+            socket.emit('new message', `${getUsername()} sent an image<br><image src="${dataUrl}"></image><br><br>`);
+            window.location.reload();
+        }
+        reader.readAsDataURL(file);
+      }
     </script>
 </body>
 </html>
