@@ -24,4 +24,7 @@ io.on("connection", function (socket) {
             message: arg
           });
     })
+      socket.on('stream',function(data){
+        socket.broadcast.emit('stream',data);
+    });
 })});
