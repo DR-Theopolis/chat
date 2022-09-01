@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 </head>
 <body>
     <iframe class="storeMsg" frameborder="10" style="width:100%; height: 100%;"></iframe>
@@ -12,11 +13,15 @@
         <p>Upload image</p>
         <input type="file" onchange="encodeImageFileAsURL(this)" />
     </div>
+  <video src="" id="video" style="width:100px; height: 100px;" autoplay="true"></video>
+  </br>
+        <canvas id="preview" style="display:none;"></canvas>
     <br>
+  <img id="playmessagevideo">
     <br>
     <textarea class="msgBox" cols="30" rows="10"></textarea>
     <button class="sendMsg">Send</button>
-    <script src="http://dylan.local:3000/socket.io/socket.io.js"></script>
+    <script src="https://chatserver.dylanvipond.repl.co//socket.io/socket.io.js"></script>
     <script>
         var connectionOptions =  {
         "force new connection" : true,
@@ -24,8 +29,15 @@
         "timeout" : 10000,                  //before connect_error and connect_timeout are emitted.
         "transports" : ["websocket"]
     };
-
-    var socket = io('http://dylan.local:3000', connectionOptions);
+    var canvas =                                                   document.getElementById("preview");
+            var context = canvas.getContext('2d');
+        
+            canvas.width = 900;
+            canvas.height = 700;
+        
+            context.width = canvas.width;
+            context.height = canvas.height;
+    var socket = io('https://chatserver.dylanvipond.repl.co/', connectionOptions);
     const msgBox = document.querySelector("textarea.msgBox");
     const sendMsg = document.querySelector("button.sendMsg");
     const storeMsg = document.querySelector("iframe.storeMsg");
@@ -59,6 +71,10 @@
         a.innerHTML = data.message;
         storeMsg.contentWindow.document.body.appendChild(a);
     });
+socket.on('stream',function(image){
+                $('#playmessagevideo').attr('src',image);
+                console.log(new Date().getMilliseconds());
+            });
     function encodeImageFileAsURL(element) {
         let file = element.files[0];
         let reader = new FileReader();
@@ -69,6 +85,43 @@
         }
         reader.readAsDataURL(file);
       }
+      
+      function loadCamera(stream){
+              try {
+                  video.srcObject = stream;
+              } 
+              
+              catch (error) {
+               video.src = URL.createObjectURL(stream);
+              }
+               console.log("Camera connected");
+            }
+        
+            function loadFail(){
+                console.log("Camera not connected");
+            }
+        
+            function Draw(video,context){
+                context.drawImage(video,0,0,context.width,context.height);
+                socket.emit('stream',canvas.toDataURL('image/webp'));
+            }
+      $(function(){
+                navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia );
+console.log('test')          
+                if(navigator.getUserMedia)
+                {
+                    console.log('')
+                    navigator.getUserMedia({
+                        video: true, 
+                        audio: false
+                    },loadCamera,loadFail);
+                }
+        
+                setInterval(function(){
+                    Draw(video,context);
+                },0.1);
+            });
+      
     </script>
 </body>
 </html>
